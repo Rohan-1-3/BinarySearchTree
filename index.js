@@ -77,20 +77,17 @@ const Tree = class{
         return node;
     }
     
-    levelOrder(){
+    levelOrder(){// breadth first display
         const queue = [this.root];
         const levelOrderList = [];
-        // console.log(queue)
         while(queue.length>0){
             const currentNode = queue.shift();
-            levelOrderList.push(currentNode.data)
-            // console.log(currentNode.data);
+            levelOrderList.push(currentNode.data);
 
             const enqueueList = [
                 currentNode.left,
                 currentNode.right
             ].filter((value) => value);
-            // console.log(enqueueList);
             queue.push(...enqueueList);
         }
         return levelOrderList;
@@ -125,7 +122,7 @@ const Tree = class{
 
     find(data,  currentNode = this.root){
         if(currentNode === null) return currentNode;
-        if(currentNode.data === data) return console.log(currentNode);
+        if(currentNode.data === data) return currentNode;
 
         if (currentNode.data < data) {// comparing the received data in the tree and finding its node
             currentNode.right = this.find(data, currentNode.right);
@@ -140,9 +137,9 @@ const Tree = class{
         return Math.max(this.findHeight(node.left),this.findHeight(node.right))+1;
     }
 
-    findDepth(node = this.root){
-    if (node === null) return 0;
-    return Math.max(this.findDepth(node.left), this.findDepth(node.right))+1;
+    findDepth(node){
+        if (node === null) return 0;
+        return Math.max(this.findDepth(node.left), this.findDepth(node.right))+1;
     }
 
     isBalanced(leftNode = this.root.left, rightNode = this.root.right){// checks if tree is balanced if not balances it
