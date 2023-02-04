@@ -135,7 +135,7 @@ const Tree = class{
         return currentNode;
     }
 
-    findHeight(node = this.root){
+    findHeight(node = this.root){// finds the height of the tree
         if(node === null) return -1;
         return Math.max(this.findHeight(node.left),this.findHeight(node.right))+1;
     }
@@ -145,12 +145,12 @@ const Tree = class{
     return Math.max(this.findDepth(node.left), this.findDepth(node.right))+1;
     }
 
-    isBalanced(leftNode = this.root.left, rightNode = this.root.right){
+    isBalanced(leftNode = this.root.left, rightNode = this.root.right){// checks if tree is balanced if not balances it
         if((this.findHeight(leftNode) - this.findHeight(rightNode))<=1) return true;
         return this.reBalance();
     }
 
-    reBalance(){
+    reBalance(){// tree balancing function
         const newArray = this.levelOrder();
         const newSortedArray = this.sort(newArray);
         this.buildTree(newSortedArray);
@@ -169,17 +169,8 @@ binaryTree.insert(51);
 binaryTree.insert(52);
 binaryTree.insert(53);
 binaryTree.insert(0);
-// binaryTree.insert(6350);
 console.log(binaryTree.isBalanced())
 binaryTree.prettyPrint();
-// binaryTree.remove(28);
-// binaryTree.find(6346)
-// console.log(binaryTree.levelOrder());
-// binaryTree.inOrder(tree);
-// binaryTree.postOrder();
 console.log(binaryTree.findHeight())
 console.log(binaryTree.findDepth())
 console.log(binaryTree.isBalanced())
-// binaryTree.reBalance();
-// binaryTree.prettyPrint();
-// 
