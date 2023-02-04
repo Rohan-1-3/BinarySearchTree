@@ -38,7 +38,42 @@ const Tree = class{
           currentNode.left = this.insert(data, currentNode.left);
         }
         return currentNode;
-      }
+    }
+
+    remove(data, currentNode = this.root){
+        if(currentNode === null) return currentNode;
+
+        if (currentNode.data < data) {
+            currentNode.right = this.remove(data, currentNode.right);
+        } else {
+            currentNode.left = this.remove(data, currentNode.left);
+        }
+
+        if(currentNode.data === data){
+            if(currentNode.left===null && currentNode.right === null){
+                return null;
+            }
+            if(currentNode.left === null){
+                return currentNode.right;
+            }
+            if(currentNode.right === null){
+                return currentNode.left;
+            }
+            currentNode.data =  this.minValue(currentNode.right);
+
+            currentNode.right = this.remove(currentNode.data, currentNode.right);
+        }
+
+        return currentNode;
+    }
+
+    minValue(node){
+        if(node.left === null) return node.data;
+        
+        node = this.minValue(node.left);
+
+        return node;
+    }
     
     preOrder(node){
         if (node == null) return;
@@ -68,11 +103,18 @@ const Tree = class{
     }
 }
 
+// const randomArray = (size) => Array.from({ length: size }, () => Math.floor(Math.random() * 100))
+// console.log(randomArray(30));
 const binaryTree = new Tree();
-const sortedArray = binaryTree.sort([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+const sortedArray = binaryTree.sort([68, 36, 80, 90, 34, 59, 50, 2, 71, 65, 18, 23, 76, 38, 68, 47, 61, 57, 62, 24, 1, 83, 41, 60, 89, 28, 34, 9, 94, 18]);
 binaryTree.buildTree(sortedArray);
 
 binaryTree.prettyPrint();
 binaryTree.insert(69);
-binaryTree.insert(20);
+// binaryTree.insert(68);
+// binaryTree.insert(20);
+// binaryTree.insert(6346);
+// binaryTree.insert(6350);
+// binaryTree.prettyPrint();
+binaryTree.remove(28);
 binaryTree.prettyPrint();
