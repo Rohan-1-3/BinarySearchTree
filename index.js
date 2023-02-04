@@ -11,12 +11,14 @@ const Tree = class{
         if (start > end) return null;
     
         const mid = parseInt((start + end) / 2, 10);
-        const node = new Node(arr[mid],this.buildTree(arr, start, mid - 1),
-                            this.buildTree(arr, mid + 1, end));
+        const node = new Node(arr[mid]);
+        node.left = this.buildTree(arr, start, mid - 1);
+        node.right = this.buildTree(arr, mid + 1, end);
+        this.root = node;
         return node;
     }
 
-    prettyPrint(node, prefix = "", isLeft = true){// visual representation of thr binary tree
+    prettyPrint(node = this.root, prefix = "", isLeft = true){// visual representation of thr binary tree
         if (node.right !== null) {
           this.prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
         }
@@ -25,6 +27,18 @@ const Tree = class{
           this.prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
         }
     }
+
+    insert(data, currentNode = this.root) {
+        if (currentNode === null) return new Node(data);
+        if (currentNode.data === data) return false;
+    
+        if (currentNode.data < data) {
+          currentNode.right = this.insert(data, currentNode.right);
+        } else {
+          currentNode.left = this.insert(data, currentNode.left);
+        }
+        return currentNode;
+      }
     
     preOrder(node){
         if (node == null) return;
@@ -55,8 +69,10 @@ const Tree = class{
 }
 
 const binaryTree = new Tree();
-const sortedArray = binaryTree.sort([1, 7, 4, 8, 4, 3, 5, 7, 9, 2, 6]);
-const tree = binaryTree.buildTree(sortedArray);
-binaryTree.prettyPrint(tree);
-console.log(tree)
-binaryTree.inOrder(tree)
+const sortedArray = binaryTree.sort([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+binaryTree.buildTree(sortedArray);
+
+binaryTree.prettyPrint();
+binaryTree.insert(69);
+binaryTree.insert(20);
+binaryTree.prettyPrint();
