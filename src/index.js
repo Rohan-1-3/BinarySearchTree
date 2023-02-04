@@ -77,24 +77,43 @@ const Tree = class{
         return node;
     }
     
-    preOrder(node){// display depth 1st
-        if (node == null) return;
+    levelOrder(){
+        const queue = [this.root];
+        const levelOrderList = [];
+        // console.log(queue)
+        while(queue.length>0){
+            const currentNode = queue.shift();
+            levelOrderList.push(currentNode.data)
+            // console.log(currentNode.data);
+
+            const enqueueList = [
+                currentNode.left,
+                currentNode.right
+            ].filter((value) => value);
+            // console.log(enqueueList);
+            queue.push(...enqueueList);
+        }
+        return levelOrderList;
+    }
+
+    preOrder(node = this.root){// display depth 1st
+        if (node === null) return;
         console.log(`${node.data}`);
         this.preOrder(node.left);
         this.preOrder(node.right);
     }
     
-    inOrder(node){// display depth 1st
-        if (node == null) return;
-        this.preOrder(node.left);
+    inOrder(node = this.root){// display depth 1st
+        if (node === null) return;
+        this.inOrder(node.left);
         console.log(`${node.data}`);
-        this.preOrder(node.right);
+        this.inOrder(node.right);
     }
     
-    postOrder(node){// display depth 1st
-        if (node == null) return;
-        this.preOrder(node.left);
-        this.preOrder(node.right);
+    postOrder(node = this.root){// display depth 1st
+        if (node === null) return;
+        this.postOrder(node.left);
+        this.postOrder(node.right);
         console.log(`${node.data}`);
     }
 
@@ -108,12 +127,33 @@ const Tree = class{
         if(currentNode === null) return currentNode;
         if(currentNode.data === data) return console.log(currentNode);
 
-        if (currentNode.data < data) {// comparing the removed data in the tree and finding its position
+        if (currentNode.data < data) {// comparing the received data in the tree and finding its node
             currentNode.right = this.find(data, currentNode.right);
         } else {
             currentNode.left = this.find(data, currentNode.left);
         }
         return currentNode;
+    }
+
+    findHeight(node = this.root){
+        if(node === null) return -1;
+        return Math.max(this.findHeight(node.left),this.findHeight(node.right))+1;
+    }
+
+    findDepth(node = this.root){
+    if (node === null) return 0;
+    return Math.max(this.findDepth(node.left), this.findDepth(node.right))+1;
+    }
+
+    isBalanced(leftNode = this.root.left, rightNode = this.root.right){
+        if((this.findHeight(leftNode) - this.findHeight(rightNode))<=1) return true;
+        return this.reBalance();
+    }
+
+    reBalance(){
+        const newArray = this.levelOrder();
+        const newSortedArray = this.sort(newArray);
+        this.buildTree(newSortedArray);
     }
  
 }
@@ -122,15 +162,24 @@ const Tree = class{
 // console.log(randomArray(30));
 const binaryTree = new Tree();
 const sortedArray = binaryTree.sort([68, 36, 80, 90, 34, 59, 50, 2, 71, 65, 18, 23, 76, 38, 68, 47, 61, 57, 62, 24, 1, 83, 41, 60, 89, 28, 34, 9, 94, 18]);
-binaryTree.buildTree(sortedArray);
 
+binaryTree.buildTree(sortedArray);
 binaryTree.prettyPrint();
-binaryTree.insert(69);
-// binaryTree.insert(68);
-// binaryTree.insert(20);
-binaryTree.insert(6346);
-binaryTree.insert(6350);
-// binaryTree.prettyPrint();
+binaryTree.insert(51);
+binaryTree.insert(52);
+binaryTree.insert(53);
+binaryTree.insert(0);
+// binaryTree.insert(6350);
+console.log(binaryTree.isBalanced())
+binaryTree.prettyPrint();
 // binaryTree.remove(28);
+// binaryTree.find(6346)
+// console.log(binaryTree.levelOrder());
+// binaryTree.inOrder(tree);
+// binaryTree.postOrder();
+console.log(binaryTree.findHeight())
+console.log(binaryTree.findDepth())
+console.log(binaryTree.isBalanced())
+// binaryTree.reBalance();
 // binaryTree.prettyPrint();
-binaryTree.find(6346)
+// 
